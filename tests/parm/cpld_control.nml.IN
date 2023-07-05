@@ -124,10 +124,12 @@ deflate_level=1
   lradar       = .false.
   ttendlim     = -999
   dt_inner     = @[DT_INNER]
+  sedi_semi    = @[SEDI_SEMI]
+  decfl        = @[DECFL]
   oz_phys      = .false.
   oz_phys_2015 = .true.
   lsoil_lsm    = 4
-  do_mynnedmf  = .false.
+  do_mynnedmf  = @[DO_MYNNEDMF]
   do_mynnsfclay = .false.
   icloud_bl    = 1
   bl_mynn_edmf = 1
@@ -161,12 +163,12 @@ deflate_level=1
   lwhtr        = .true.
   swhtr        = .true.
   cnvgwd       = .true.
-  shal_cnv     = .true.
+  shal_cnv     = @[SHAL_CNV]
   cal_pre      = .false.
   redrag       = .true.
   dspheat      = .true.
   hybedmf      = .false.
-  satmedmf     = .true.
+  satmedmf     = @[SATMEDMF]
   isatmedmf    = 1
   lheatstrg    = @[LHEATSTRG]
   lseaspray    = @[LSEASPRAY]
@@ -175,6 +177,7 @@ deflate_level=1
   cnvcld       = @[CNVCLD]
   imfshalcnv   = @[IMFSHALCNV]
   imfdeepcnv   = @[IMFDEEPCNV]
+  progsigma    = @[PROGSIGMA]
   ras          = @[RAS]
   cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
@@ -187,6 +190,7 @@ deflate_level=1
   iopt_btr     = 1
   iopt_run     = 1
   iopt_sfc     = @[IOPT_SFC]
+  iopt_trs     = @[IOPT_TRS]
   iopt_frz     = 1
   iopt_inf     = 1
   iopt_rad     = @[IOPT_RAD]
@@ -203,15 +207,31 @@ deflate_level=1
   effr_in      = .true.
   ldiag_ugwp   = @[LDIAG_UGWP]
   fscav_aero   = @[FSCAV_AERO]
+  do_RRTMGP          = @[DO_RRTMGP]
+  active_gases       = 'h2o_co2_o3_n2o_ch4_o2'
+  ngases             = 6
+  lw_file_gas        = 'rrtmgp-data-lw-g128-210809.nc'
+  lw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-lw.nc'
+  sw_file_gas        = 'rrtmgp-data-sw-g112-210809.nc'
+  sw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-sw.nc'
+  rrtmgp_nGptsSW     = 112
+  rrtmgp_nGptsLW     = 128
+  rrtmgp_nBandsLW    = 16
+  rrtmgp_nBandsSW    = 14
+  doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
+  doGP_lwscat        = @[DOGP_LWSCAT]
+  doGP_sgs_cnv       = @[DOGP_SGS_CNV]
   do_sppt      = @[DO_SPPT]
   do_shum      = @[DO_SHUM]
   do_skeb      = @[DO_SKEB]
+  use_med_flux = @[USE_MED_FLUX]
   frac_grid    = @[FRAC_GRID]
   cplchm       = @[CPLCHM]
   cplflx       = @[CPLFLX]
   cplice       = @[CPLICE]
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
+  cpllnd       = @[CPLLND]
   do_ca        = @[DO_CA]
   ca_global    = @[CA_GLOBAL]
   ca_sgs       = @[CA_SGS]
@@ -224,6 +244,8 @@ deflate_level=1
   ca_trigger   = @[CA_TRIGGER]
   nspinup      = @[NSPINUP]
   iseed_ca     = @[ISEED_CA]
+  lndp_type    = @[LNDP_TYPE]
+  n_var_lndp   = @[N_VAR_LNDP]
 /
 
 &cires_ugwp_nml
@@ -238,7 +260,7 @@ deflate_level=1
   knob_ugwp_dokdis  = 1
   knob_ugwp_ndx4lh  = 1 
   knob_ugwp_version = @[KNOB_UGWP_VERSION]
-  launch_level = 54
+  launch_level      = 54
 /
 
 &gfdl_cloud_microphysics_nml
@@ -303,7 +325,7 @@ deflate_level=1
   FNZORC   = 'igbp'
   FNALBC   = @[FNALBC]
   FNALBC2  = @[FNALBC2]
-  FNAISC   = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
+  FNAISC   = 'IMS-NIC.blended.ice.monthly.clim.grb'
   FNTG3C   = @[FNTG3C]
   FNVEGC   = @[FNVEGC]
   FNVETC   = @[FNVETC]
@@ -346,6 +368,13 @@ deflate_level=1
 /
 
 &nam_sfcperts
+  lndp_type      = @[LNDP_TYPE]
+  lndp_model_type = @[LNDP_MODEL_TYPE]
+  LNDP_TAU=21600,
+  LNDP_LSCALE=500000,
+  ISEED_LNDP=2010,
+  lndp_var_list = @[LNDP_VAR_LIST]
+  lndp_prt_list = @[LNDP_PRT_LIST]
 /
 
 &MOM_input_nml
@@ -354,4 +383,4 @@ deflate_level=1
   restart_input_dir = 'INPUT/',
   restart_output_dir = 'RESTART/',
   parameter_filename = 'INPUT/MOM_input',
-  'INPUT/MOM_override'/
+                       'INPUT/MOM_override'/

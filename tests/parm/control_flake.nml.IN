@@ -106,6 +106,12 @@ deflate_level=1
 /
 
 &gfs_physics_nml
+  lkm          = @[LKM]
+  iopt_lake    = @[IOPT_LAKE]
+  lakefrac_threshold = @[LAKEFRAC_THRESHOLD] ! 0.15
+  lakedepth_threshold = @[LAKEDEPTH_THRESHOLD] ! 0.5
+  clm_lake_debug = .false.
+
   fhzero       = 6
   h2o_phys     = .true.
   ldiag3d      = .false.
@@ -160,6 +166,7 @@ deflate_level=1
   iopt_snf     = 4
   iopt_tbot    = 2
   iopt_stc     = 1
+  iopt_trs     = 2
   debug        = .false.
   oz_phys      = .false.
   oz_phys_2015 = .true.

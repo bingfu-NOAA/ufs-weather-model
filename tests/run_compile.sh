@@ -15,12 +15,13 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${OPNREQ_TEST} == true ]]; then
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_opnreq_compile_${COMPILE_NR}
-  else
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
-  fi
+  echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   exit 1
+}
+
+remove_fail_test() {
+    echo "Removing test failure flag file for compile_${COMPILE_NR}"
+    rm -f $PATHRT/fail_compile_${COMPILE_NR}
 }
 
 if [[ $# != 4 ]]; then
@@ -34,12 +35,7 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
-OPNREQ_TEST=${OPNREQ_TEST:-false}
-if [[ ${OPNREQ_TEST} == true ]]; then
-  rm -f fail_opnreq_compile_${COMPILE_NR}
-else
-  rm -f fail_compile_${COMPILE_NR}
-fi
+remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
@@ -51,6 +47,8 @@ export JBNME="compile_${COMPILE_NR}"
 export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
 
 echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+export RT_LOG=${LOG_DIR}/compile_${TEST_NR}.log
 
 source rt_utils.sh
 source atparse.bash
@@ -85,11 +83,14 @@ ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
 
 cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
 cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+remove_fail_test
+
 ################################################################################
 # End compile job
 ################################################################################
 
-echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), 1" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compile ${COMPILE_NR}"
